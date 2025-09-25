@@ -8,6 +8,21 @@ It’s structured to be modular, so teams can plug in new sources or scale thing
 
 ---
 
+## 📌 Key Source Systems in a Digital Bank
+
+| System              | What It’s For                                            | Tech (commonly used)             | Nature         | Example Data                          |
+|---------------------|----------------------------------------------------------|----------------------------------|----------------|---------------------------------------|
+| **CBS**             | Core banking — the money engine. Accounts, balances, deposits, TRMT | Oracle CBS, BaNCS, Finacle       | OLTP           | cust_id, acct_no, txn_id, balance     |
+| **CRM**             | Customer info hub. KYC, contacts, preferences            | Salesforce + in-house tweaks     | OLTP / API     | email, phone, dob, KYC flag           |
+| **UPI Switch**      | Routes UPI payments, logs everything (real time)         | NPCI switch, custom gateway      | OLTP+Streaming | vpa, upi_txn_id, response, payer/payee |
+| **Merchant DB**     | Onboarding + merchant/terminal setup                     | MySQL / PostgreSQL               | OLTP           | merchant_id, category, region         |
+| **Risk Engine**     | Fraud checks. Velocity rules, device scoring, flags bad stuff | Elastic, MongoDB, Redis          | Streaming/NoSQL| txn_id, cust_id, device_id, score     |
+| **Report DB**       | A lighter CBS copy, made for RBI reports & audits        | Oracle / SQL Server              | OLAP (lite)    | snapshot tables, flattened data       |
+| **Channel Logs**    | App trails — logins, OTPs, user clicks                   | ElasticSearch, Kafka             | Streaming      | user_id, device, ip, latency, screen  |
+| **Reg APIs (NPCI)** | Sends data outward (compliance, TRMT, regulatory files)  | REST, flat files                 | API/File       | report_date, submission status        |
+
+---
+
 ## 🗂️ Directory Structure
 
 ```bash
@@ -18,3 +33,5 @@ bank-data-warehouse/
 ├── sample-dataset/     # Simulated data from CBS, UPI, CRM, etc.
 └── README.md           # Project overview
 ```
+
+
